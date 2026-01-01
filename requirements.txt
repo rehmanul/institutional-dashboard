@@ -1,0 +1,39 @@
+# Institutional Persistence Dashboard - Production Requirements
+
+# Core Framework
+streamlit>=1.30.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+plotly>=5.18.0
+altair>=5.2.0
+wordcloud>=1.9.0
+
+# NLP - Sentiment
+vaderSentiment>=3.3.2
+
+# NLP - Keywords
+yake>=0.4.8
+scikit-learn>=1.3.0
+
+# Statistics
+statsmodels>=0.14.0
+scipy>=1.11.0
+
+# Note: Heavy dependencies below are optional for Render free tier
+# Uncomment if you have a paid plan with more RAM
+
+# NLP - Emotions (optional, 50MB)
+# nrclex>=4.0.0
+
+# NLP - Topics (optional, 500MB+)
+# bertopic>=0.16.0
+# sentence-transformers>=2.2.0
+
+# NLP - Zero-shot (optional, 2GB+)
+# transformers>=4.36.0
+# torch>=2.0.0
+
+# Panel models (optional)
+# linearmodels>=5.3
