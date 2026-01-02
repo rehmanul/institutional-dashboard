@@ -45,21 +45,40 @@ st.markdown("---")
 
 # File upload
 st.markdown("## 📁 Import Data")
+st.markdown("""
+💡 **Tip**: Export CSV from the Bill Extractor (Task 1) and upload here.
+The CSV should have a column containing legislative text.
+""")
+
 uploaded_file = st.file_uploader(
-    "Upload CSV with 'text' column",
+    "Upload CSV from Bill Extractor or with text column",
     type=['csv'],
-    help="CSV file must have a 'text' column containing legislative text"
+    help="CSV can have 'text', 'section_title', 'raw_text_reference', or 'action' column"
 )
 
 if uploaded_file:
     try:
         df = pd.read_csv(uploaded_file)
         
-        if 'text' not in df.columns:
-            st.error("CSV must have a 'text' column")
+        # Try to find a suitable text column
+        text_column_candidates = ['text', 'section_title', 'raw_text_reference', 'action', 'directive', 'content']
+        text_column = None
+        for col in text_column_candidates:
+            if col in df.columns:
+                text_column = col
+                break
+        
+        if text_column is None:
+            st.error(f"CSV must have one of these columns: {', '.join(text_column_candidates)}")
+            st.info(f"Your CSV has: {', '.join(df.columns.tolist())}")
             st.stop()
         
-        st.success(f"✅ Loaded {len(df)} documents")
+        # Rename to 'text' for consistency
+        if text_column != 'text':
+            df['text'] = df[text_column]
+            st.info(f"Using '{text_column}' column as text source")
+        
+        st.success(f"✅ Loaded {len(df)} documents from '{text_column}' column")
         
         with st.expander("Preview Data"):
             st.dataframe(df.head(10))
