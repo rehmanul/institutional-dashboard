@@ -9,10 +9,20 @@ import pandas as pd
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 import json
+from core.graph_builder import InstitutionalGraph
 
 
 class DataLoader:
     """Load and prepare data for the dashboard."""
+
+    @staticmethod
+    def load_institutional_graph(
+        schema_path: str = "graph.schema.json",
+        nodes_path: str = "graph.nodes.json",
+        edges_path: str = "graph.edges.json"
+    ) -> InstitutionalGraph:
+        """Load the Institutional Graph."""
+        return InstitutionalGraph(schema_path, nodes_path, edges_path)
     
     @staticmethod
     def load_csv(
