@@ -133,12 +133,42 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+from core.data_loader import DataLoader
+
 # Main content
 def main():
+    # Initialize Institutional Graph
+    try:
+        graph = DataLoader.load_institutional_graph()
+        graph_stats = graph.get_stats()
+        graph_status = "✅ Active"
+        graph_color = "#48bb78"
+    except Exception as e:
+        graph_stats = None
+        graph_status = f"❌ Error: {str(e)}"
+        graph_color = "#f56565"
+
     # Header
     st.markdown('<h1 class="main-header">🏛️ Institutional Continuity & Replay</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Procedural Memory for Durable Policy Relevance</p>', unsafe_allow_html=True)
     
+    # Graph Status
+    st.markdown(f"""
+    <div style="background: {graph_color}; padding: 1rem; border-radius: 8px; color: white; text-align: center; margin-bottom: 1.5rem;">
+        <strong>Institutional Graph System:</strong> {graph_status}
+    </div>
+    """, unsafe_allow_html=True)
+
+    if graph_stats:
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Nodes", graph_stats['node_count'])
+        with col2:
+            st.metric("Total Edges", graph_stats['edge_count'])
+
+        with st.expander("Graph Details"):
+            st.json(graph_stats)
+
     # Core problem statement
     st.markdown("""
     <div class="problem-box">
